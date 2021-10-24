@@ -3,9 +3,9 @@
 Pit::Pit() : Hazard("Pit") {}
 
 string Pit::displayClue() {
-	return "Your footsteps echo, reminding you\nof the time you went near that deep hole";
+	return "Your footsteps echo, reminding you\nof the time you went near that deep hole\n";
 }
 
 string Pit::sameRoom() {
-	return "You tumble down the edge, failing\nto catch the ledge and fall to your death";
+	return "You tumble down the edge, failing\nto catch the ledge and fall to your death\n";
 }

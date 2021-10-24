@@ -30,6 +30,7 @@ vector<Location*> gameLocs;
 string direction;
 int option = -1;
 vector<Hazard*> hazards;
+int score;
 // methods
 int runGame();
 string askForString(string question, vector<string> valid);

@@ -26,14 +26,17 @@ public:
 	Hazard();
 	// accessor methods
 	string getName();
+	int getPosition();
 	// mutator methods
-	
+	void setPosition(int newPosition);
 	// display variables
 	virtual string displayClue();
 	virtual string sameRoom();
+	 
 protected:
 	// player variables
 	string name;
+	int position;
 };
 
 #endif

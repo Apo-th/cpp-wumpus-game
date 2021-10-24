@@ -17,3 +17,11 @@ string Hazard::sameRoom() {
 string Hazard::getName() {
 	return name;
 }
+
+void Hazard::setPosition(int newPosition) {
+	position = newPosition;
+}
+
+int Hazard::getPosition() {
+	return position;
+}

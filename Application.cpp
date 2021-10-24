@@ -61,17 +61,24 @@ int runGame() {
 			{
 				currentPos = rand() % 20;
 				currentExits = gameLocs[currentPos]->getExits();
+				// check if new room will kill you
+				if (gameLocs[currentPos]->getHazard() != nullptr) {
+					cout << gameLocs[currentPos]->getHazard()->sameRoom() << endl;
+					// if wumpus or pit end the game
+					if (gameLocs[currentPos]->getHazard()->getName() == "Wumpus" || gameLocs[currentPos]->getHazard()->getName() == "Pit")
+					{
+						return 0;
+					}
+				}
 			}
 		}
-		else
-		{
+		// give warning if nearby
 			for (int i = 0; i < gameLocs[currentPos]->getConnections().size(); i++) {
 				if (gameLocs[gameLocs[currentPos]->getConnections()[i]]->getHazard() != nullptr)
 				{
 					cout << gameLocs[gameLocs[currentPos]->getConnections()[i]]->getHazard()->displayClue();
 				}
 			}
-		}
 		// checks if player is out of time or arrows
 		if (player->getArrows() == 0)
 		{
@@ -97,9 +104,30 @@ int runGame() {
 				if (gameLocs[checkDirection(shoot, currentExits)]->getHazard()->getName() == "Wumpus")
 				{
 					return 1;
-					player->useArrow();
+				}
+				else
+				{
+					if (rand() % 10 > 2)
+					{
+						// move wumpus
+						int position = rand() % 3;
+						gameLocs[hazards[0]->getPosition()]->setHazard(nullptr);
+						int newPos = gameLocs[hazards[0]->getPosition()]->getConnections()[position];
+						gameLocs[newPos]->setHazard(hazards[0]);
+						hazards[0]->setPosition(position);
+						cout << "The Wumpus has awoken at the sound of a wild arrow.\nIt is moving to a new place" << endl;
+						if (gameLocs[newPos]->getHazard() != nullptr)
+						{
+							if (gameLocs[newPos]->getHazard()->getName() == "Wumpus");
+							{
+								cout << gameLocs[newPos]->getHazard()->sameRoom();
+							}
+						}
+						
+					}
 				}
 			}
+			player->useArrow();
 			player->useOil();
 		}
 		if (action == "C")
@@ -155,19 +183,23 @@ void setHazards(string difficulty) {
 	// seed rand
 	srand(time(NULL));
 	// set hazards, more with higher difficulty
+	int random = rand() % 20;
+	// set wumpus position and the room it is in
+	hazards.push_back(new Wumpus());
+	gameLocs[random]->setHazard(hazards[0]);
+	hazards[0]->setPosition(random);
 	if (difficulty == "E")
 	{
-		hazards.push_back(new Wumpus());
 		hazards.push_back(new Pit());
 		hazards.push_back(new Pit());
 		hazards.push_back(new Bats());
 		hazards.push_back(new Bats());
-		for (int i = 0; i < hazards.size(); i++)
+		for (int i = 1; i < hazards.size(); i++)
 		{
 			bool flag = true;
 			while (flag)
 			{
-				int random = rand() % 20;
+				random = rand() % 20;
 				if (gameLocs[random]->getHazard() == nullptr)
 				{
 					gameLocs[random]->setHazard(hazards[i]);
@@ -179,19 +211,19 @@ void setHazards(string difficulty) {
 	}
 	else if (difficulty == "H")
 	{
-		hazards.push_back(new Wumpus());
 		hazards.push_back(new Pit());
 		hazards.push_back(new Pit());
 		hazards.push_back(new Pit());
 		hazards.push_back(new Bats());
 		hazards.push_back(new Bats());
 		hazards.push_back(new Bats());
+		player->setOil(20);
 		for (int i = 0; i < hazards.size(); i++)
 		{
 			bool flag = true;
 			while (flag)
 			{
-				int random = rand() % 20;
+				random = rand() % 20;
 				if (gameLocs[random]->getHazard() == nullptr)
 				{
 					gameLocs[random]->setHazard(hazards[i]);
@@ -314,7 +346,7 @@ string readFromFile(string fileName) {
 
 string displayOptions() {
 	string retVal = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-	retVal += "[S]hoot   [M]ap   [H]elp   [Q]uit   [C]hange location\n";
+	retVal += "[S]hoot   [H]elp   [Q]uit   [C]hange location\n";
 	retVal += "Arrows: " + to_string(player->getArrows()) + "      Oil: " + to_string(player->getOil());
 	return retVal;
 }

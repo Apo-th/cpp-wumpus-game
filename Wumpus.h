@@ -25,15 +25,15 @@ public:
 	~Wumpus() {}
 	Wumpus();
 	// accessor methods
-
+	void setPosition(int newPosition);
 	// mutator methods
-
+	int getPosition();
 	// display variables
 	string displayClue();
 	string sameRoom();
 private:
 	// Wumpus variables
-
+	//int position;
 };
 
 #endif

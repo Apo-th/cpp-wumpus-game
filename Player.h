@@ -40,7 +40,7 @@ private:
 	string name;
 	int oil;
 	int arrows;
-	int MAX_OIL = 15;
+	int MAX_OIL = 30;
 	int MAX_ARROWS = 5;
 };
 
