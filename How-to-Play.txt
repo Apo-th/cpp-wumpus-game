@@ -1,0 +1,24 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Silven Valley was a peaceful town,
+before the wumpus came to 
+terrorise it. The villagers have
+rounded up their fortune to hire a
+strong warrior to defeat the Wumpus.
+
+The Wumpus lives in an underground
+cavern, consisting of 20 smaller 
+caves, all connected to 3 other
+caves. There are other hazards,
+such as bottomless pits and super
+bats. You will get a message when
+you are near the Wumpus, and you
+have the option to shoot an arrow
+into one of the adjacent rooms.
+Hitting the Wumpus will kill it
+and end the game. If you miss, there
+is a chance the Wumpus will wake and
+move to a different room, possibly
+killing you. If run out of
+time or arrows, you will die and
+fail your mission.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,4 @@
+C:\Users\saito\source\repos\A2-TylerSaito\Debug\A2-TylerSaito.exe
+C:\Users\saito\source\repos\A2-TylerSaito\Debug\A2-TylerSaito.pdb
+C:\Users\saito\source\repos\A3-TylerSaito\Debug\A3-TylerSaito.exe
+C:\Users\saito\source\repos\A3-TylerSaito\Debug\A3-TylerSaito.pdb
