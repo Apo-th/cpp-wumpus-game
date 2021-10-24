@@ -18,11 +18,16 @@ int main() {
 		if (success == 1)
 		{
 			cout << "Congratulations! You have defeated the\nWumpus and saved the town\n";
+			cout << "Your final score was:\n";
+			cout << to_string(score) << " points!\n";
 		}
 		else if (success == 0)
 		{
 			cout << "Better luck next time\n";
+			cout << "Your final score was:\n";
+			cout << to_string(score) << " points!\n";
 		}
+		cout << "Thank you for playing!\n";
 	}
 	
 	return 1;
@@ -42,37 +47,97 @@ int runGame() {
 	vector<string> currentExits;
 	currentExits = gameLocs[currentPos]->getExits();
 	bool cont = true;
-	vector<string> options = {"S", "M", "H", "Q", "C"};
+	vector<string> options = {"S", "M", "H", "Q", "B", "V"};
 	string difficulty = askForString("What difficulty would you like to play?\n      [E]asy     [H]ard\n", {"E", "H"});
 	setHazards(difficulty);
 
+	win = 2;
 	while (cont) {
 		// check is you are in or next to hazard room
 		if (gameLocs[currentPos]->getHazard() != nullptr)
 		{
 			cout << gameLocs[currentPos]->getHazard()->sameRoom() << endl;
 			// if wumpus or pit end the game
-			if (gameLocs[currentPos]->getHazard()->getName() == "Wumpus" || gameLocs[currentPos]->getHazard()->getName() == "Pit")
+			if (gameLocs[currentPos]->getHazard()->getName() == "Wumpus")
 			{
-				return 0;
+				// check if you have super suit
+				bool live = false;
+				for (int i = 0; i < player->getItems().size(); i++)
+				{
+					if (player->getItems()[i]->getName() == "SuperSuit")
+					{
+						live = true;
+						player->getItems().erase(player->getItems().begin() + i);
+						break;
+					}
+				}
+				if (!live)
+				{
+					score = calculateScore(difficulty) / 2;
+					return 0;
+				}
+				else
+				{
+					cout << "You have been saved by the super suit you found\n";
+				}
+				
 			}
 			// if bats move to random room
 			else if (gameLocs[currentPos]->getHazard()->getName() == "Bats")
 			{
-				currentPos = rand() % 20;
-				currentExits = gameLocs[currentPos]->getExits();
-				// check if new room will kill you
-				if (gameLocs[currentPos]->getHazard() != nullptr) {
-					cout << gameLocs[currentPos]->getHazard()->sameRoom() << endl;
-					// if wumpus or pit end the game
-					if (gameLocs[currentPos]->getHazard()->getName() == "Wumpus" || gameLocs[currentPos]->getHazard()->getName() == "Pit")
+				bool safe = false;
+				for (int i = 0; i < player->getItems().size(); i++)
+				{
+					if (player->getItems()[i]->getName() == "Weight")
 					{
-						return 0;
+						safe = true;
+						player->getItems().erase(player->getItems().begin() + i);
 					}
+				}
+				if (!safe)
+				{
+					currentPos = rand() % 20;
+					currentExits = gameLocs[currentPos]->getExits();
+					// check if new room will kill you
+					if (gameLocs[currentPos]->getHazard() != nullptr) {
+						cout << gameLocs[currentPos]->getHazard()->sameRoom() << endl;
+						// if wumpus or pit end the game
+						if (gameLocs[currentPos]->getHazard()->getName() == "Wumpus" || gameLocs[currentPos]->getHazard()->getName() == "Pit")
+						{
+							score = calculateScore(difficulty) / 2;
+							return 0;
+						}
+					}
+				}
+				else
+				{
+					cout << "You were saved by the weights,\nyou were too heavy for the bats to carry";
+				}
+				
+			}
+			else if (gameLocs[currentPos]->getHazard()->getName() == "Pit")
+			{
+				bool safe = false;
+				for (int i = 0; i < player->getItems().size(); i++)
+				{
+					if (player->getItems()[i]->getName() == "Rope")
+					{
+						safe = true;
+						player->getItems().erase(player->getItems().begin() + i);
+					}
+				}
+				if (!safe)
+				{
+					score = calculateScore(difficulty) / 2;
+					return 0;
+				}
+				else
+				{
+					"You were saved by the rope. You\nmanaged to hook the ledge and climb out";
 				}
 			}
 		}
-		// give warning if nearby
+		// give warning hazards if nearby
 			for (int i = 0; i < gameLocs[currentPos]->getConnections().size(); i++) {
 				if (gameLocs[gameLocs[currentPos]->getConnections()[i]]->getHazard() != nullptr)
 				{
@@ -83,11 +148,13 @@ int runGame() {
 		if (player->getArrows() == 0)
 		{
 			cout << "You ran out of arrows\n";
+			score = calculateScore(difficulty) / 2;
 			return 0;
 		} 
 		else if (player->getOil() == 0)
 		{
 			cout << "You ran out of time\n";
+			score = calculateScore(difficulty) / 2;
 			return 0;
 		}
 		cout << printLoc(gameLocs[currentPos]) << endl;
@@ -99,11 +166,17 @@ int runGame() {
 		if (action == "S")
 		{
 			string shoot = askForString("Please input the direction you wish to shoot\n" + gameLocs[currentPos]->showExits(), currentExits);
-			if (gameLocs[checkDirection(shoot, currentExits)]->getHazard() != nullptr)
+			if (gameLocs[checkDirection(shoot, currentExits)]->getHazard())
 			{
 				if (gameLocs[checkDirection(shoot, currentExits)]->getHazard()->getName() == "Wumpus")
 				{
-					return 1;
+					win = 1;
+					cout << "win ===1 \n";
+
+					cont = false;
+					cout << "cont == false\n";
+					score = calculateScore(difficulty);
+					cout << "have calced dfficulty\n";
 				}
 				else
 				{
@@ -115,7 +188,7 @@ int runGame() {
 						int newPos = gameLocs[hazards[0]->getPosition()]->getConnections()[position];
 						gameLocs[newPos]->setHazard(hazards[0]);
 						hazards[0]->setPosition(position);
-						cout << "The Wumpus has awoken at the sound of a wild arrow.\nIt is moving to a new place" << endl;
+						cout << "The Wumpus has awoken at the sound of a wild arrow.\nIt is moving to a new place\n" << endl;
 						if (gameLocs[newPos]->getHazard() != nullptr)
 						{
 							if (gameLocs[newPos]->getHazard()->getName() == "Wumpus");
@@ -128,9 +201,9 @@ int runGame() {
 				}
 			}
 			player->useArrow();
-			player->useOil();
+			player->useOil();			
 		}
-		if (action == "C")
+		else if (action == "M")
 		{
 			direction = askForString("Please input the direction you wish to travel out of\n" + gameLocs[currentPos]->showExits(), currentExits);
 			int exitPos = 0;
@@ -143,17 +216,36 @@ int runGame() {
 			currentPos = gameLocs[currentPos]->getConnections()[exitPos];
 			currentExits = gameLocs[currentPos]->getExits();
 			player->useOil();
+
+			// player gets 0-9 gold each turn
+			player->findGold(rand() % 10);
+			// 1/1000 chance of finding a super suit
+			if (rand() % 1000 == 0)
+			{
+				player->getItems().push_back(new SuperSuit);
+				cout << "Congratulations, you have just picked up a super suit";
+				cout << player->getItems()[player->getItems().size() - 1]->displayDescription();
+			}
 		}
 		else if (action == "Q")
 		{
-			return 2;
+			cont = false;
+			score = 0;
 		}
 		else if (action == "H")
 		{
 			cout << readFromFile("How-to-Play");
 		}
+		else if (action == "B")
+		{
+			shop();
+		}
+		else if (action == "V")
+		{
+			cout << player->displayItems();
+		}
 	}
-	return 1;
+	return win;
 }
 
 void setLocations() {
@@ -346,8 +438,9 @@ string readFromFile(string fileName) {
 
 string displayOptions() {
 	string retVal = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-	retVal += "[S]hoot   [H]elp   [Q]uit   [C]hange location\n";
+	retVal += "[S]hoot   [H]elp   [Q]uit   [M]ove   [B]uy   [V]iew Items\n";
 	retVal += "Arrows: " + to_string(player->getArrows()) + "      Oil: " + to_string(player->getOil());
+	retVal += "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 	return retVal;
 }
 
@@ -361,3 +454,107 @@ int checkDirection(string direction, vector<string> currentExits) {
 	}
 	return -1;
 }
+
+int calculateScore(string difficulty) {
+	if (difficulty == "E")
+	{
+		return (player->getArrows() + player->getOil()) * 300;
+	}
+	else
+	{
+		return (player->getArrows() + player->getOil()) * 500;
+	}
+}
+
+void shop() {
+	// let player shop with gold they have
+	bool shop = true;
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+	cout << " Welcome to the shop, buy what you \n  want with the gold you find\n";
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+	vector<string> shoptions = {"E", "O", "A", "R", "W"};
+	string shoptionsString = "[E]xit   [O]il   [A]rrows   [R]ope   [W}eights";
+	while (shop)
+	{
+		string view = askForString("What would you like to view:\n" + shoptionsString + "\n", shoptions);
+		if (view == "E")
+		{
+			break;
+		}
+		else if (view == "O")
+		{
+			cout << "Increase your chance of winning with more move\n";
+			cout << "The price is 5 gold per oil\n";
+			int originOil = player->getOil();
+			int boughtOil = askForInt("How much oil do you wish to buy,\nup to 10 at a time?\n", {0,1,2,3,4,5,6,7,8,9,10});
+			if (player->useGold(5*boughtOil))
+			{
+				if (player->addOil(boughtOil))
+				{
+					cout << to_string(boughtOil) << " added\n";
+				}
+				else
+				{
+					string confirm = askForString("You can only have a max of " + to_string(player->getMaxOil()) + " oil\n, do you wish to confirm [Y]  [N]", { "Y", "N" });
+					if (confirm == "N")
+					{
+						player->setOil(originOil);
+					}
+				}
+			}
+			
+		}
+		else if (view == "A")
+		{
+			cout << "Increase your chance of hitting the Wumpus, by buying more arrows\n";
+			cout << "The price is 10 gold per arrow\n";
+			int originArrows = player->getArrows();
+			int boughtArrows = askForInt("How many arrows do you wish to buy,\nup to 10 at a time?\n", { 0,1,2,3,4,5,6,7,8,9,10 });
+			if (player->useGold(10*boughtArrows))
+			{
+				if (player->addArrows(boughtArrows))
+				{
+					cout << to_string(boughtArrows) << " added\n";
+				}
+				else
+				{
+					string confirm = askForString("You can only have a max of " + to_string(player->getMaxArrows()) + " oil\n, do you wish to confirm [Y]  [N]", { "Y", "N" });
+						if (confirm == "N")
+						{
+							player->setOil(originArrows);
+						}
+				}
+			}
+			
+		}
+		else if (view == "R")
+		{
+			Rope* rope = new Rope();
+			cout << rope->displayDescription();
+			cout << "The price for a rope is 30 gold\n";
+			string buyRope = askForString("Would you like to buy a rope? [Y]   [N]", { "Y", "N" });
+			if (buyRope == "Y")
+			{
+				if (player->useGold(30))
+				{
+					player->getItems().push_back(rope);
+				}
+			}
+		}
+		else if (view == "W")
+		{
+			Weight* weight = new Weight();
+			cout << weight->displayDescription();
+			cout << "The price for a rope is 30 gold\n";
+			string buyWeight = askForString("Would you like to buy a weight? [Y]   [N]", { "Y", "N" });
+			if (buyWeight == "Y")
+			{
+				if (player->useGold(30))
+				{
+					player->getItems().push_back(weight);
+				}
+			}
+		}
+	}
+}
+

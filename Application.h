@@ -20,6 +20,10 @@
 #include "Pit.h"
 #include "Wumpus.h"
 #include "Bats.h"
+#include "Item.h"
+#include "Rope.h"
+#include "Weight.h"
+#include "SuperSuit.h"
 
 using namespace std;
 
@@ -31,6 +35,7 @@ string direction;
 int option = -1;
 vector<Hazard*> hazards;
 int score;
+int win;
 // methods
 int runGame();
 string askForString(string question, vector<string> valid);
@@ -44,5 +49,7 @@ string readFromFile(string fileName);
 string displayOptions();
 int checkDirection(string direction, vector<string> currentExits);
 void setHazards(string difficulty);
+int calculateScore(string difficulty);
+void shop();
 
 #endif

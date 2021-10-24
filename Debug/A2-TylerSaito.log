@@ -1,13 +1,16 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(467,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (A2-TylerSaito.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Application.cpp
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(40,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(76,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(121,65): warning C4390: ';': empty controlled statement found; is this the intent?
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(184,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(197,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(220,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(247,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(255,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(303,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(344): warning C4715: 'readFromFile': not all control paths return a value
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(45,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(65,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(89,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(121,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(141,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(194,65): warning C4390: ';': empty controlled statement found; is this the intent?
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(276,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(289,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(313,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(340,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(348,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(396,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\saito\source\repos\A3-TylerSaito\Application.cpp(437): warning C4715: 'readFromFile': not all control paths return a value
   A2-TylerSaito.vcxproj -> C:\Users\saito\source\repos\A3-TylerSaito\Debug\A3-TylerSaito.exe
