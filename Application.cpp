@@ -100,7 +100,7 @@ int runGame() {
 					player->useArrow();
 				}
 			}
-			
+			player->useOil();
 		}
 		if (action == "C")
 		{
@@ -114,14 +114,16 @@ int runGame() {
 			}
 			currentPos = gameLocs[currentPos]->getConnections()[exitPos];
 			currentExits = gameLocs[currentPos]->getExits();
+			player->useOil();
 		}
 		else if (action == "Q")
 		{
 			return 2;
 		}
-		// update oil
-		player->useOil();
-		
+		else if (action == "H")
+		{
+			cout << readFromFile("How-to-Play");
+		}
 	}
 	return 1;
 }
