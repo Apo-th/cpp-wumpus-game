@@ -171,7 +171,7 @@ void setHazards(string difficulty) {
 				if (gameLocs[random]->getHazard() == nullptr)
 				{
 					gameLocs[random]->setHazard(hazards[i]);
-					cout << gameLocs[random]->displayInfo() << endl;
+					//cout << gameLocs[random]->displayInfo() << endl;
 					flag = false;
 				}
 			}
@@ -195,6 +195,7 @@ void setHazards(string difficulty) {
 				if (gameLocs[random]->getHazard() == nullptr)
 				{
 					gameLocs[random]->setHazard(hazards[i]);
+					//cout << gameLocs[random]->displayInfo() << endl;
 					flag = false;
 				}
 			}
