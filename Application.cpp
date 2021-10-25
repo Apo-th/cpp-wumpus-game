@@ -50,6 +50,7 @@ int runGame() {
 	vector<string> options = {"S", "M", "H", "Q", "B", "V"};
 	string difficulty = askForString("What difficulty would you like to play?\n      [E]asy     [H]ard\n", {"E", "H"});
 	setHazards(difficulty);
+	cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
 
 	win = 2;
 	while (cont) {
@@ -168,18 +169,16 @@ int runGame() {
 			string shoot = askForString("Please input the direction you wish to shoot\n" + gameLocs[currentPos]->showExits(), currentExits);
 			if (gameLocs[checkDirection(shoot, currentExits)]->getHazard())
 			{
+				cout << gameLocs[checkDirection(shoot, currentExits)]->getHazard()->getName() << endl;
 				if (gameLocs[checkDirection(shoot, currentExits)]->getHazard()->getName() == "Wumpus")
 				{
 					win = 1;
-					cout << "win ===1 \n";
-
 					cont = false;
-					cout << "cont == false\n";
 					score = calculateScore(difficulty);
-					cout << "have calced dfficulty\n";
 				}
 				else
 				{
+					cout << "Unfortunately you missed the target,\you flinch at the sound of the clattering arrow\n";
 					if (rand() % 10 > 2)
 					{
 						// move wumpus
@@ -188,12 +187,31 @@ int runGame() {
 						int newPos = gameLocs[hazards[0]->getPosition()]->getConnections()[position];
 						gameLocs[newPos]->setHazard(hazards[0]);
 						hazards[0]->setPosition(position);
-						cout << "The Wumpus has awoken at the sound of a wild arrow.\nIt is moving to a new place\n" << endl;
+						cout << "Unluckily, the Wumpus has awoken at the sound of a wild arrow.\nIt is moving to a new place\n" << endl;
 						if (gameLocs[newPos]->getHazard() != nullptr)
 						{
 							if (gameLocs[newPos]->getHazard()->getName() == "Wumpus");
 							{
-								cout << gameLocs[newPos]->getHazard()->sameRoom();
+								// check if you have super suit
+								bool live = false;
+								for (int i = 0; i < player->getItems().size(); i++)
+								{
+									if (player->getItems()[i]->getName() == "SuperSuit")
+									{
+										live = true;
+										player->getItems().erase(player->getItems().begin() + i);
+										break;
+									}
+								}
+								if (!live)
+								{
+									score = calculateScore(difficulty) / 2;
+									return 0;
+								}
+								else
+								{
+									cout << "You have been saved by the super suit you found\n";
+								}
 							}
 						}
 						
@@ -244,6 +262,7 @@ int runGame() {
 		{
 			cout << player->displayItems();
 		}
+		cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
 	}
 	return win;
 }
@@ -446,7 +465,7 @@ string displayOptions() {
 
 int checkDirection(string direction, vector<string> currentExits) {
 	int exitPos = 0;
-	for (exitPos; exitPos < 2; exitPos++)
+	for (exitPos; exitPos < 3; exitPos++)
 	{
 		if (currentExits[exitPos] == direction) {
 			return exitPos;
